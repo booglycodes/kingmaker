@@ -4,6 +4,7 @@ import allWords from 'https://esm.sh/an-array-of-english-words';
 export { selfId };
 
 const fiveLetterWords = allWords.filter(w => w.length === 5 && /^[a-z]+$/.test(w));
+console.log('Word list loaded:', fiveLetterWords.length, 'words');
 
 let room = null;
 
