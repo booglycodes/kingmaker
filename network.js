@@ -1,10 +1,22 @@
 import { joinRoom, selfId } from 'https://esm.sh/trystero';
-import allWords from 'https://esm.sh/an-array-of-english-words';
 
 export { selfId };
 
-const roomWords = allWords.filter(w => w.length >= 3 && w.length <= 5 && /^[a-z]+$/.test(w));
-console.log('Word list loaded:', roomWords.length, 'words');
+let room = null;
+let roomWords = [];
+
+// Load common words from Google 10k list, filter to 3-5 letters
+const wordsReady = fetch('https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt')
+  .then(r => r.text())
+  .then(text => {
+    roomWords = text.split('\n').filter(w => w.length >= 3 && w.length <= 5 && /^[a-z]+$/.test(w));
+    console.log('Word list loaded:', roomWords.length, 'common words');
+  })
+  .catch(() => {
+    console.warn('Word list fetch failed, using fallback');
+  });
+
+export { wordsReady };
 
 let room = null;
 
