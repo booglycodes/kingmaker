@@ -9,25 +9,42 @@ export let send = {};
 export let on = {};
 
 export function join(roomCode) {
-    room = joinRoom({ appId: 'kingmaker-v1' }, roomCode)
-    const actions = ['lobby', 'join', 'joinResult', 'ready', 'start', 'action', 'state', 'hand', 'error'];
-    for (const name of actions) {
-        const [sendFn, onFn] = room.makeAction(name);
-        send[name] = sendFn
-        on[name] = onFn
+  room = joinRoom({ appId: 'kingmaker-v1' }, roomCode);
+
+  const actions = ['lobby', 'join', 'joinResult', 'ready', 'start', 'action', 'state', 'hand', 'error'];
+
+  for (const name of actions) {
+    const action = room.makeAction(name);
+    // makeAction returns [sendFn, receiveFn] as an array
+    // OR it might return an object with .send and .onMessage
+    if (Array.isArray(action)) {
+      send[name] = action[0];
+      on[name] = action[1];
+    } else {
+      // Object style: { send, onMessage }
+      send[name] = (data, target) => {
+        if (target) {
+          action.send(data, { target });
+        } else {
+          action.send(data);
+        }
+      };
+      on[name] = (callback) => {
+        action.onMessage = (data, peerId) => callback(data, peerId);
+      };
     }
-    return room;
+  }
+
+  return room;
 }
 
 export function generateCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
-    let code = ''
-    for (let i = 0; i < 6; i++) {
-        code += chars[Math.floor(Math.random() * chars.length)]
-    }
-    return code
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let code = '';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
 }
 
 export function getRoom() {
-    return room
+  return room;
 }
