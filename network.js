@@ -18,8 +18,6 @@ const wordsReady = fetch('https://raw.githubusercontent.com/first20hours/google-
 
 export { wordsReady };
 
-let room = null;
-
 // Action senders/receivers (populated after join)
 export let send = {};
 export let on = {};
