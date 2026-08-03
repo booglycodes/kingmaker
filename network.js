@@ -1,7 +1,9 @@
 import { joinRoom, selfId } from 'https://esm.sh/trystero';
-import wordList from 'https://esm.sh/5letterwords';
+import allWords from 'https://esm.sh/an-array-of-english-words';
 
 export { selfId };
+
+const fiveLetterWords = allWords.filter(w => w.length === 5 && /^[a-z]+$/.test(w));
 
 let room = null;
 
@@ -37,16 +39,13 @@ export function join(roomCode) {
 }
 
 export function generateCode() {
-  let words = wordList;
-  if (!Array.isArray(words)) words = wordList.default || wordList.words || Object.values(wordList).find(Array.isArray) || [];
-  if (words.length === 0) {
-    // Fallback to random 5 chars if word list failed to load
+  if (fiveLetterWords.length === 0) {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
     let code = '';
     for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
     return code;
   }
-  return words[Math.floor(Math.random() * words.length)].toUpperCase();
+  return fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)].toUpperCase();
 }
 
 export function getRoom() {
