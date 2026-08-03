@@ -1,4 +1,4 @@
-import { selfId, send, on, join, generateCode } from './network.js';
+import { selfId, send, on, join, generateCode, findEmptyRoom } from './network.js';
 import { showScreen, log } from './ui.js';
 
 let isHost = false;
@@ -22,11 +22,12 @@ export function getRoomCode() { return roomCode; }
 // ============================================================
 // CREATE GAME (HOST)
 // ============================================================
-export function createGame() {
+export async function createGame() {
   myName = document.getElementById('input-name').value.trim();
   if (!myName) { showError('Enter a name'); return; }
 
-  roomCode = generateCode();
+  showError('Finding an open room...');
+  roomCode = await findEmptyRoom();
   isHost = true;
 
   updateUrl();

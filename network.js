@@ -49,6 +49,30 @@ export function join(roomCode) {
   return room;
 }
 
+export async function findEmptyRoom(maxAttempts = 5) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const code = generateCode();
+    const testRoom = joinRoom({ appId: 'kingmaker-v1' }, code);
+
+    const occupied = await new Promise(resolve => {
+      let found = false;
+      testRoom.onPeerJoin = () => { found = true; resolve(true); };
+      setTimeout(() => resolve(found), 2000);
+    });
+
+    if (!occupied) {
+      testRoom.leave();
+      return code;
+    }
+
+    testRoom.leave();
+    console.log(`Room ${code} occupied, trying another...`);
+  }
+
+  // Fallback: just return a code and hope for the best
+  return generateCode();
+}
+
 export function generateCode() {
   if (roomWords.length === 0) {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
