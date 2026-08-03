@@ -9,7 +9,7 @@ let roomWords = [];
 const wordsReady = fetch('https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt')
   .then(r => r.text())
   .then(text => {
-    roomWords = text.split('\n').filter(w => w.length >= 4 && w.length <= 5 && /^[a-z]+$/.test(w));
+    roomWords = text.split('\n').filter(w => (w.length === 4 || w.length === 5) && /^[a-z]+$/.test(w));
     console.log('Word list loaded:', roomWords.length, 'common words');
   })
   .catch(() => {
