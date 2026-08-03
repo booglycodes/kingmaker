@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kingmaker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SCREEN: Start -->
+<div id="screen-start" class="screen active">
+  <h1>Kingmaker</h1>
+  <div class="toggle-row">
+    <button id="tab-create" class="tab active">Create</button>
+    <button id="tab-join" class="tab">Join</button>
+  </div>
+  <input type="text" id="input-name" placeholder="Your name">
+  <input type="text" id="input-code" class="hidden" placeholder="Room code" maxlength="4">
+  <button id="btn-go">Create Game</button>
+  <div class="error" id="start-error"></div>
+</div>
+
+<!-- SCREEN: Lobby -->
+<div id="screen-lobby" class="screen">
+  <h2>Lobby</h2>
+  <div class="room-code" id="display-code"></div>
+  <div class="link-row">
+    <input type="text" id="display-link" readonly>
+    <button id="btn-copy">Copy</button>
+  </div>
+  <ul class="player-list" id="player-list"></ul>
+  <p id="lobby-status"></p>
+  <button id="btn-ready">Ready</button>
+</div>
+
+<!-- SCREEN: Game -->
+<div id="screen-game" class="screen">
+  <h2>Game Started</h2>
+  <div id="game-area"></div>
+  <div id="log"></div>
+</div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
