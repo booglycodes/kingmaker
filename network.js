@@ -15,13 +15,26 @@ export function join(roomCode) {
 
   for (const name of actions) {
     const action = room.makeAction(name);
-    // makeAction returns [sendFn, receiveFn] as an array
-    // OR it might return an object with .send and .onMessage
-    if (Array.isArray(action)) {
+    console.log(`makeAction('${name}') returned:`, typeof action, action);
+
+    if (typeof action === 'function') {
+      // makeAction returns the send function directly, with .onMessage property
+      send[name] = (data, target) => {
+        if (target) {
+          action(data, target);
+        } else {
+          action(data);
+        }
+      };
+      on[name] = (callback) => {
+        // The receive function might be attached to the send function
+        // or returned differently
+      };
+    } else if (Array.isArray(action)) {
       send[name] = action[0];
       on[name] = action[1];
-    } else {
-      // Object style: { send, onMessage }
+    } else if (action && typeof action === 'object') {
+      // Object with send/onMessage
       send[name] = (data, target) => {
         if (target) {
           action.send(data, { target });
