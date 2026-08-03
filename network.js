@@ -37,7 +37,15 @@ export function join(roomCode) {
 }
 
 export function generateCode() {
-  const words = Array.isArray(wordList) ? wordList : wordList.default || [];
+  let words = wordList;
+  if (!Array.isArray(words)) words = wordList.default || wordList.words || Object.values(wordList).find(Array.isArray) || [];
+  if (words.length === 0) {
+    // Fallback to random 5 chars if word list failed to load
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    let code = '';
+    for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
   return words[Math.floor(Math.random() * words.length)].toUpperCase();
 }
 
