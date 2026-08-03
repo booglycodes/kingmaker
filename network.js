@@ -35,7 +35,7 @@ export function join(roomCode) {
     } else if (action && typeof action === 'object') {
       send[name] = (data, target) => {
         if (target) {
-          action.send(data, { target });
+          action.send(data, target);
         } else {
           action.send(data);
         }
