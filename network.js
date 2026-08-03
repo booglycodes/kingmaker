@@ -44,9 +44,11 @@ export function generateCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
     let code = '';
     for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
-    return code;
+    return code + Math.floor(Math.random() * 100);
   }
-  return fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)].toUpperCase();
+  const word = fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)].toUpperCase();
+  const num = Math.floor(Math.random() * 100);
+  return word + num;
 }
 
 export function getRoom() {
