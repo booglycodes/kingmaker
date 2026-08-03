@@ -3,8 +3,8 @@ import allWords from 'https://esm.sh/an-array-of-english-words';
 
 export { selfId };
 
-const fiveLetterWords = allWords.filter(w => w.length === 5 && /^[a-z]+$/.test(w));
-console.log('Word list loaded:', fiveLetterWords.length, 'words');
+const roomWords = allWords.filter(w => w.length >= 3 && w.length <= 5 && /^[a-z]+$/.test(w));
+console.log('Word list loaded:', roomWords.length, 'words');
 
 let room = null;
 
@@ -40,13 +40,13 @@ export function join(roomCode) {
 }
 
 export function generateCode() {
-  if (fiveLetterWords.length === 0) {
+  if (roomWords.length === 0) {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
     let code = '';
     for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
     return code + Math.floor(Math.random() * 100);
   }
-  const word = fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)].toUpperCase();
+  const word = roomWords[Math.floor(Math.random() * roomWords.length)].toUpperCase();
   const num = Math.floor(Math.random() * 100);
   return word + num;
 }
