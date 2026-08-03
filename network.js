@@ -52,7 +52,7 @@ export function join(roomCode) {
 export async function findEmptyRoom(maxAttempts = 5) {
   for (let i = 0; i < maxAttempts; i++) {
     const code = generateCode();
-    const testRoom = joinRoom({ appId: 'kingmaker-v1' }, code);
+    const testRoom = joinRoom({ appId: 'kingmaker-v1', passive: true }, code);
 
     const occupied = await new Promise(resolve => {
       let found = false;
@@ -60,12 +60,12 @@ export async function findEmptyRoom(maxAttempts = 5) {
       setTimeout(() => resolve(found), 2000);
     });
 
+    testRoom.leave();
+
     if (!occupied) {
-      testRoom.leave();
       return code;
     }
 
-    testRoom.leave();
     console.log(`Room ${code} occupied, trying another...`);
   }
 
